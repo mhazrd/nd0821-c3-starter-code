@@ -29,6 +29,13 @@ cat_features = [
 model_pth = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model/model.pkl')
 encoder_pth = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model/encoder.pkl')
 
+
+if "DYNO" in os.environ and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    if os.system("dvc pull") != 0:
+        exit("dvc pull failed")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
+
 with open(model_pth, 'rb') as f:
     model = pickle.load(f)
 with open(encoder_pth, 'rb') as f:
