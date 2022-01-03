@@ -8,10 +8,6 @@ item = {'age': 42, 'workclass': 'Private', 'fnlgt': 159449, 'education': 'Bachel
     
 r = requests.post(predict_uri, json=item)
 
-
-assert r.status_code == 200
-assert r.json() == {"prediction": 1}
-
 print('Request body: ', item)
 print('Status code: ', r.status_code)
 print('Reponse: ', r.json())

@@ -46,6 +46,37 @@ def compute_model_metrics(y, preds):
     return precision, recall, fbeta
 
 
+def evaluate_model_on_column_slices(df, column, y, preds):
+    """
+    Validates the trained machine learning model on column slices
+    using precision, recall, and F1.
+
+    Inputs
+    ------
+    df: pd.DataFrame
+        Test dataset used for creating preds
+    column: str
+        Column name to create slices on
+    y : np.array
+        Known labels, binarized.
+    preds : np.array
+        Predicted labels, binarized.
+    Returns
+    -------
+    preds : list
+        Prediction on column slices
+        (Precision, recall, fbeta)
+    """
+    slices = df[column].unique()
+    slice_metrics = []
+    for slc in slices:
+        filt = df[column] == slc
+        slice_metrics.append(
+            (slc,) + compute_model_metrics(y[filt], preds[filt])
+        )
+    return slice_metrics
+
+
 def inference(model, X):
     """ Run model inferences and return the predictions.
 

@@ -7,7 +7,7 @@ import pandas as pd
 import pickle
 
 from ml.data import process_data
-from ml.model import train_model, inference, compute_model_metrics
+from ml.model import train_model, inference, compute_model_metrics, evaluate_model_on_column_slices
 
 # Add code to load in the data.
 data = pd.read_csv('../data/cleaned_census.csv')
@@ -47,12 +47,9 @@ with open('../model/encoder.pkl', 'w+b') as f:
 y_pred = inference(model, X_test)
 overall_metric = compute_model_metrics(y_test, y_pred)
 
-slices = test['education'].unique()
-slice_metrics = [('overall',)+overall_metric]
-for slc in slices:
-    filt = test['education'] == slc
-    slice_metrics.append(
-        (slc,) + compute_model_metrics(y_test[filt], y_pred[filt]))
+slice_metrics = evaluate_model_on_column_slices(test, 'education', y_test, y_pred)
 
 metric_df = pd.DataFrame(slice_metrics, columns=['education_slice', 'precision', 'recall', 'f1'])
 metric_df.to_csv('../model/slice_output.txt', index=False)
+
+
