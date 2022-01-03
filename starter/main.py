@@ -1,5 +1,6 @@
 # Put the code for your API here.
 
+import os
 import pickle
 import pandas as pd
 import numpy as np
@@ -23,9 +24,14 @@ cat_features = [
     "sex",
     "native_country",
 ]
-with open('model/model.pkl', 'rb') as f:
+
+
+model_pth = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model/model.pkl')
+encoder_pth = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'model/encoder.pkl')
+
+with open(model_pth, 'rb') as f:
     model = pickle.load(f)
-with open('model/encoder.pkl', 'rb') as f:
+with open(encoder_pth, 'rb') as f:
     encoder = pickle.load(f)
 
 class DataItem(BaseModel):
