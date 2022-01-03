@@ -1,0 +1,10 @@
+stages:
+  train:
+    cmd: python train_model.py
+    deps:
+    - ../data/cleaned_census.csv
+    - train_model.py
+    outs:
+    - ../model/encoder.pkl
+    - ../model/model.pkl
+    - ../model/slice_output.txt
